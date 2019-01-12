@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function enableDisable(val)
+        {
+            document.getElementById("username").disabled = false;
+            document.getElementById("login").disabled = false;
+            if(val == 'setup')
+            {
+                document.getElementById("Topics").disabled = true;
+                document.getElementById("PublishedList").disabled = true;
+                document.getElementById("SubscribedList").disabled = true;
+                document.getElementById("publish").disabled = true;
+                <!--document.getElementById("refresh").disabled = true;-->
+                document.getElementById("subscribe").disabled = true;
+            }
+            else if(val == 'login')
+            {
+                document.getElementById("Topics").disabled = false;
+                document.getElementById("PublishedList").disabled = false;
+                document.getElementById("SubscribedList").disabled = false;
+                document.getElementById("publish").disabled = false;
+                <!--document.getElementById("refresh").disabled = false;-->
+                document.getElementById("subscribe").disabled = false;
+            }
+        }
+    </script>
+    <title>Publisher-Subscriber</title>
+</head>
+<body onload="enableDisable('setup')" background="{{STATIC_URL}}static\image.jpeg">
+    <script type="text/javascript">
+    var refreshVar;
+    var refreshVar2;
+    var count=0;
+    function startNotif(){
+    $.ajax({
+            url: '/',
+            type: "POST",
+            data : { user_notif : $("#username").val() },
+            success: function (result) {
+                if(result=='true'){
+                alert('true');
+                notifyUser();
+                updateSub();
+            }
+             },
+            error: function (xhr, status, err) {
+                alert(err);
+                }
+           });
+    }
+    function callUpdate(){
+        refreshVar3=setInterval(startNotif, 2000);
+    }
+    function updateSub(){
+    $.ajax({
+        url: '/',
+        type: "POST",
+        data : { subscribed_user : $("#username").val() },
+        success: function (result) {
+           $("#SubscribedList").val(result);
+           },
+        error: function (xhr, status, err) {
+            alert(err);
+            }
+       });
+    }
+     function notifyUser(){
+        $.ajax({
+            url: '/',
+            type: "POST",
+            data : { notify_user : $("#username").val() },
+            success: function (result) {
+                if(result!=''){
+                    alert(result);
+                }
+             },
+            error: function (xhr, status, err) {
+                alert(err);
+                }
+           });
+        }
+    function loginCall() {
+     alert('hello');
+     $.ajax({
+        url : '/',
+        type : 'POST',
+        data : {
+            'userName' : $("#username").val()
+        },
+        dataType:'html',
+        success : function(data) {
+            alert('Data: '+data);
+        },
+        error : function(request,error)
+        {
+            alert("Request: "+JSON.stringify(request));
+        }
+    });
+ }
+ function publishCall() {
+     $.ajax({
+        url : '/',
+        type : 'POST',
+        data : {
+            'Data' : $("#PublishedList").val(),
+            'Topics' : $("#Topics").val()
+        },
+        dataType:'html',
+        success : function(data) {
+            alert('Data: '+data);
+        },
+        error : function(request,error)
+        {
+            alert("Request: "+JSON.stringify(request));
+        }
+    });
+ }
+ function addSub() {
+     alert('calling addSub');
+     $.ajax({
+        url : '/',
+        type : 'POST',
+        data : {
+            'subtopics' : $("#Topics").val(),
+            'subusername' : $("#username").val()
+        },
+        dataType:'html',
+        success : function(data) {
+            alert('Data: '+data);
+        },
+        error : function(request,error)
+        {
+            alert("Request: "+JSON.stringify(request));
+        }
+    });
+    callUpdate();
+ }
+    </script>
+    <form action="/" method="POST" id="myForm">
+        <script type="text/javascript">
+            var userList={{username|safe}}
+            var currentUser=userList[userList.length-1];
+            alert(currentUser);
+            var pubdata={{data|safe}}
+        </script>
+        <center>
+           Enter username: <input type="text" id="username" name="username" placeholder="Enter username" />
+            &nbsp;
+           <input type="button" name="login" id="login" class="button" value="Login" onclick="loginCall();enableDisable('login');"/>
+           <br><br>
+            Topics: <select name="Topics" id="Topics">
+                <option value="Football">Football</option>
+                <option value="Movies">Movies</option>
+                <option value="TV Shows">TV Shows</option>
+                <option value="Gadgets">Gadgets</option>
+                <option value="World News">World News</option>
+            </select>
+            <br><br>
+            <textarea id="PublishedList" name="PublishedList" placeholder="If you are a publisher" onload="submitData()" style="width:20%; height:500px;"></textarea>
+            <textarea id="SubscribedList" name="SubscribedList" placeholder="If you are a subscriber" style="width:20%; height:500px;" readonly></textarea>
+            <br><br>
+            <input type="button" name="publish" onclick="publishCall()" id="publish" class="button" value="Publish"/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <!--<input type="button" name="refresh" class="button" onclick="updateSub()" id="refresh" value="Refresh"/>-->
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" name="subscribe" onclick="addSub()" id="subscribe" class="button" value="Subscribe"/>
+            <br>
+        </center>
+    </form>
+</body>
+</html>

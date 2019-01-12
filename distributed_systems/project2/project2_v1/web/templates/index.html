@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Python code Compiler</title>
+</head>
+<body background="{{STATIC_URL}}static\image.jpg">
+    <form action="/" method="POST">
+        <br><br><br>
+        <center>
+            <textarea id="codespace" name="codespace" placeholder="Enter code here" style="height:500px; width:1000px; text-align:justify;" value={{request.form.codespace}}></textarea>
+        <br><br>
+            <input type="submit" name="submit" class="submit" value="Submit Code"/>
+        </center>
+    </form>
+</body>
+</html>

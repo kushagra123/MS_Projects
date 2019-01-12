@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="{{ STATIC_URL}}static\index.css">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Local Schools</title>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaman8FHEf0Eo3lZwQWKKKMCagJgoyNss&callback=initMap"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaman8FHEf0Eo3lZwQWKKKMCagJgoyNss&libraries=places"></script>
+    <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?client=e6a9dbbf41e5cc3040051f01249d5972">-->
+    </script>
+    <script type="text/javascript" src="{{ STATIC_URL}}static\gmaps.js">
+    </script>
+</head>
+<body>
+<div class="head" style="width: 69.6%;height: 120px; margin: 17px 0 0 15.19921875%;"><h1>Welcome to MyWaypoint</h1>
+<h5>This tool let's you find your route to the destination along with the weather conditions you may experience in your travel</h5>
+</div>
+<div class="side" style="clear: both;width: 20.4166666666%;height: 480px;margin-left: 15.1666666666%;background-color:blue"><h1>DIV SIDE</h1></div>
+<div class="input"  style="z-index: 2;width: 49.25%;height: 115px;margin-left: 0.015625%; background-color:green">
+    <form method="POST" action="{{ url_for('/home') }}">
+            <label>From</label>
+            <input type=”text” id="from" name="from">
+            <label>To</label>
+            <input type=”text” id="to" name="to">
+            <button type="submit" onclick="initMap();" name="route">route</button>
+        </form>
+</div>
+<div class="container">
+    <div id="map" style="display : inline-block;clear: both;width:750px;height: 365px;margin: -365px 541px 0px;"></div>
+    <div id="weather" style="display : inline-block;clear: both;width:750px;height: 365px;margin: -0px 541px 0px;"></div>
+</div>
+</div>
+</body>
+</html>

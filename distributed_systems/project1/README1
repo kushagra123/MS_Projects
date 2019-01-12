@@ -1,0 +1,16 @@
+Open the python project in PyCharm Editor.
+Add your API key at the following places-
+For Phase 1 -
+MainClass.py - 
+	Google API - line 15
+	OpenWeatherMap API - line 16
+The secret key is generated for Flask, that can remain same
+view.html -
+	Google API - line 6, 7
+index.html - 
+	Google API - line 9, 10
+
+Then execute the main in MainClass.py, it will generate a link below.
+On opening the link, you can access the GUI.
+
+You have setup the project for execution.
