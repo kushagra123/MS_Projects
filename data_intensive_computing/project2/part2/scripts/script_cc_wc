@@ -1,0 +1,9 @@
+#!/bin/bash
+hadoop fs -mkdir -p /user/ankita/MR/input
+hadoop fs -put ccData.txt /user/ankita/MR/input
+hadoop fs -ls /user/ankita/MR/input
+hadoop fs -rm /user/ankita/MR/output/*
+hadoop fs -rmdir /user/ankita/MR/output
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming-2.6.0-cdh5.7.0.jar -file /src/wc_mapper.py -mapper /src/wc_mapper.py -file /src/wc_reducer.py -reducer /src/wc_reducer.py -input /user/ankita/MR/input/* -output /user/ankita/MR/output
+hadoop fs -cat /user/ankita/MR/output/part*
+hadoop fs -get /user/ankita/MR/output/ /src/

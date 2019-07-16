@@ -1,0 +1,10 @@
+win: 1999
+game: 1990
+say: 1928
+league: 1831
+play: 1757
+get: 1646
+season: 1463
+score: 1461
+go: 1437
+club: 1342

@@ -1,0 +1,4 @@
+#!/bin/bash
+read -p 'Part name? ' varpart
+sudo cp /home/ankita/Desktop/hadoop/output/part* /home/ankita/Desktop/hadoop/output_dir/output_$(varpart)
+sudo chown ankita:ankita /home/ankita/Desktop/hadoop/output_dir/output_$(varpart)

@@ -1,0 +1,10 @@
+basketball: 6442
+soccer: 6071
+tennis: 2186
+play: 2105
+game: 1683
+team: 1606
+get: 1404
+go: 1143
+like: 1141
+coach: 1089

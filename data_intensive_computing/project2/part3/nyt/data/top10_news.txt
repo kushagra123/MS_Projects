@@ -1,0 +1,10 @@
+say: 3218
+team: 1464
+game: 1241
+one: 1175
+league: 1146
+mr: 1075
+time: 1061
+play: 907
+last: 893
+would: 889
