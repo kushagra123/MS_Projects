@@ -1,0 +1,393 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Election Violence Extractor and Summarizer</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="static/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<div id="header">
+
+				<div class="top">
+
+					<!-- Logo -->
+						<div id="logo">
+							<h1 id="title">Dashboard</h1>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="#search" id="search-link"><span class="icon fa-search">Search</span></a></li>
+								<li><a href="#result" id="result-link"><span class="icon fa-table">Result</span></a></li>
+								<li><a href="#map" id="map-link"><span class="icon fa-map">Map</span></a></li>
+								<li><a href="#analysis" id="analysis-link"><span class="icon fa-bar-chart">Analysis</span></a></li>
+							</ul>
+						</nav>
+
+				</div>
+
+				<div class="bottom">
+
+					<!-- Social Icons -->
+						<ul class="icons">
+							<li><a href="#"><img src="static/images/ankita.jpeg" height="75" width="75" /><span class="label">Ankita</span></a></li>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<li><a href="#"><img src="static/images/kushagra.jpeg" height="75" width="75" /><span class="label">Kushagra</span></a></li>
+						</ul>
+
+				</div>
+
+			</div>
+
+		<!-- Main -->
+		<div id="main">
+				<!-- Search -->
+					<section id="search" class="one dark cover">
+						<div class="container">
+
+							<header>
+								<h2>Search</h2>
+							</header>
+							<form action="/" method="POST" id="myForm">
+								<main>
+									<div class="inner-addon right-addon">
+									<i class="glyphicon glyphicon-search"></i>
+									<input type="text" name="stext" id="stext" class ="form-control" placeholder="Search query..." />
+									</div>
+									<br>
+									<div class="opt" style="height:50px;width:200px;display:block;margin:0 auto;">
+										<select class="round" id="combo" name="combo">
+											<option default>Select Source</option>
+											<option value="news">News</option>
+											<option value="twitter">Twitter</option>
+										</select>
+									</div>
+								</main>
+							<footer>
+								<button class="button scrolly">Search</button>
+							</footer>
+							</form>
+						</div>
+					</section>
+
+				<!-- Result -->
+					<section id="result" class="two">
+						<h2>Result</h2>
+						<br>
+						<div class="container" style="overflow:auto;height: calc(200vh - 300px);">
+							<table class="table">
+								<thead>
+									<tr>
+										{% for rows in fieldname %}
+											<th>{{rows}}</th>
+										{% endfor %}
+									</tr>
+								</thead>
+								<tbody>
+									{% for rows in range(0, len) %}
+									<tr>
+										{% for row in output[rows] %}
+											<td><div style="overflow:auto;width:auto;height: calc(75vh - 300px);">{{row[0]}}</div></td>
+										{% endfor %}
+									</tr>
+									{% endfor %}
+								</tbody>
+								</div>
+							</table>
+						</div>
+					</section>
+
+				<!-- Map -->
+					<section id="map" class="three">
+						<div class="container">
+
+							<header>
+								<h2>Map</h2>
+							</header>
+							<br>
+							<div id="googleMap" style="width:100%;height:400px;border: 1px solid #4B0082;"></div>
+
+							<script>
+							function myMap() {
+							var mapProp= {
+							  center:new google.maps.LatLng(20.0114083,64.4398422),
+							  zoom:3,
+							};
+							var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+							var coord={{coord|safe}}
+							var i=0;
+							for(;i<coord.length;i++){
+								latlng=coord[i];
+								myLatLng = {lat: parseFloat(latlng[0]), lng: parseFloat(latlng[1])};
+								var title_str=latlng[2];
+								var marker = new google.maps.Marker({
+									position: myLatLng,
+									map: map,
+									title:title_str
+									});
+								}
+							}
+							</script>
+
+
+						</div>
+					</section>
+
+				<!-- Analysis -->
+					<section id="analysis" class="four">
+						<div class="container">
+
+							<header>
+								<h2>Analysis</h2>
+							</header>
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="card card-chart">
+										<div class="card-header">
+							                <h4 class="card-title">Topics Analysis</h4>
+							            </div>
+										<br>
+							            <div class="chart-area" id="topics" style="height:225px;display:inline-block;margin:0 auto">
+											<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+												<script type="text/javascript">
+												  google.charts.load("current", {packages:["corechart"]});
+												  google.charts.setOnLoadCallback(drawChart);
+												  function drawChart() {
+													var tevent={{tevent|safe}}
+													var tfreq={{tfreq|safe}}
+													var data =new google.visualization.DataTable();
+													data.addColumn('string','event type');
+													data.addColumn('number','frequency');
+													var i=0;
+													for(;i<tevent.length;i++){
+														data.addRow([tevent[i],tfreq[i]]);
+													}
+													var options = {
+														chartArea: {
+														  width: '80%',
+														  height: '80%'
+														},
+													  	title: 'Total count of topics under Election Violence',
+													  	titlePosition: 'center',
+													 	is3d: true,
+													 	hAxis: { title: 'Event Type' },
+													 	vAxis: { title: 'Frequency' },
+													 	backgroundColor: { fill:'transparent' },
+													 	colors:['lightblue','lightpink'],
+													 	pieHole: 0.5,
+													 	sliceVisibilityThreshold: .2,
+														width: 1100,
+        												height: 400,
+        												legend: {
+														  maxLines: 1,
+														  textStyle: {
+															fontSize: 15
+														  }
+														}
+													};
+													var chart = new google.visualization.PieChart(document.getElementById('topics'));
+													chart.draw(data, options);
+												  }
+											  </script>
+							            </div>
+							        </div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="card card-chart">
+										<div class="card-header">
+							                <h4 class="card-title">Source Analysis</h4>
+							            </div>
+										<br>
+							            <div class="chart-area" id="source" style="height:225px;display:inline-block;margin:0 auto">
+											<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+												<script type="text/javascript">
+												  google.charts.load("current", {packages:["corechart"]});
+												  google.charts.setOnLoadCallback(drawChart);
+												  function drawChart() {
+													var src={{srcAnalysis|safe}}
+													var srcfreq={{srcfreq|safe}};
+													if(srcfreq != -1) {
+														var data =new google.visualization.DataTable();
+														data.addColumn('string','Source');
+														data.addColumn('number','frequency');
+														var i=0;
+														for(;i<src.length;i++){
+															data.addRow([src[i],srcfreq[i]]);
+														}
+														var options = {
+															chartArea: {
+															  width: '80%',
+															  height: '80%'
+															},
+															title: 'Total count of sources under Election Violence',
+															titlePosition: 'center',
+															is3d: true,
+															hAxis: { title: 'Source' },
+															vAxis: { title: 'Frequency' },
+															backgroundColor: { fill:'transparent' },
+															colors:['#FFCCBC','#B2DFDB','#E1BEE7'],
+															width: 1100,
+															height: 400,
+															legend: {
+															  maxLines: 1,
+															  textStyle: {
+																fontSize: 15
+															  }
+															}
+														};
+														var chart = new google.visualization.PieChart(document.getElementById('source'));
+														chart.draw(data, options);
+														}
+												  }
+											  </script>
+							            </div>
+							        </div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="card card-chart">
+										<div class="card-header">
+							                <h4 class="card-title">Intensity Map</h4>
+							            </div>
+										<br><br>
+							            <div class="chart-area" id="heatmap" style="height:250px;">
+											<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+												<script type="text/javascript">
+												  google.charts.load("current", {packages:["intensitymap"]});
+												  google.charts.setOnLoadCallback(drawChart);
+												  function drawChart() {
+													var sourceKey={{loc|safe}}
+													var sourceVal={{locfreq|safe}}
+													var data = new google.visualization.DataTable();
+													data.addColumn('string','Source');
+													data.addColumn('number','frequency');
+													var i=0;
+													for(;i<sourceKey.length;i++){
+														data.addRow([sourceKey[i],sourceVal[i]]);
+													}
+													var options={
+														height:220,
+														width:440,
+														colors: ['red'],
+														region:'asia',
+													}
+													var chart = new google.visualization.IntensityMap(document.getElementById('heatmap'));
+													chart.draw(data,options);
+												  }
+											  </script>
+							            </div>
+							        </div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="card card-chart">
+										<div class="card-header">
+							                <h4 class="card-title">Time Period Analysis</h4>
+							            </div>
+										<br>
+							            <div class="chart-area" id="timeline" style="height:250px;display:inline-block;margin:0 auto">
+											<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
+												<script type='text/javascript'>
+												  google.charts.load('current', {'packages':['corechart']});
+												  google.charts.setOnLoadCallback(drawChart);
+												  function drawChart() {
+												  	var tldate={{tldate|safe}}
+													var tlfreq={{tlfreq|safe}}
+													var data =new google.visualization.DataTable();
+													data.addColumn('string','time period');
+													data.addColumn('number','frequency');
+													var i=0;
+													for(;i<tldate.length;i++){
+														data.addRow([tldate[i],tlfreq[i]]);
+													}
+													var options = {
+														chartArea: {
+														  width: '85%'
+														},
+													  	title: 'Number of events recorded based on time period',
+													  	titlePosition: 'center',
+													 	legend: { position: 'none' },
+													 	hAxis: { title: 'Month-Year' },
+													 	vAxis: { title: 'Frequency' },
+													 	backgroundColor: { fill:'transparent' },
+													 	colors:['purple'],
+														width: 1000,
+        												height: 400
+													};
+													var chart = new google.visualization.ColumnChart(document.getElementById('timeline'));
+													chart.draw(data, options);
+												  }
+												</script>
+							            </div>
+							        </div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="card card-chart">
+										<div class="card-header">
+											<h4 class="card-title">Wordcloud</h4>
+										</div>
+										<br><br>
+										<div class="chart-area" id="wordcloud" style="height:225px;">
+											<div class="elementary-row" style="width:100%;margin:auto;">
+											  <a href="#">
+												  <div class="elementary-column" style="width:50%;float:left;">
+													  <img src="static/images/Person.png" width="90%">
+													  <figcaption>Person Wordcloud</figcaption>
+												  </div>
+												  <div class="elementary-column" style="width:50%;float:left;">
+													  <img src="static/images/Organization.png" width="90%">
+													  <figcaption>Organization Wordcloud</figcaption>
+												  </div>
+											  </a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+		<!-- Footer -->
+			<div id="footer">
+
+				<!-- Copyright -->
+					<ul class="copyright">
+						<li>CSE 635 - Advanced Information Retrieval</li>
+						<li>Data Digest - Text Extraction & Summarization</li>
+					</ul>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_OT5jhj2424F6OfZGp2iCRMiUnq7b4dw
+&callback=myMap"></script>
+		  	<script src="https://cdn.anychart.com/js/8.0.1/anychart-core.min.js"></script>
+  			<script src="https://cdn.anychart.com/js/8.0.1/anychart-pie.min.js"></script>
+			<script src="static/js/jquery.min.js"></script>
+			<script src="static/js/jquery.scrolly.min.js"></script>
+			<script src="static/js/jquery.scrollex.min.js"></script>
+			<script src="static/js/browser.min.js"></script>
+			<script src="static/js/breakpoints.min.js"></script>
+			<script src="static/js/util.js"></script>
+			<script src="static/js/main.js"></script>
+			<script src="static/js/chartjs.min.js"></script>
+
+	</body>
+</html>
