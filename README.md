@@ -1,13 +1,7 @@
 # MS_Projects
 Fall 2018 & Spring 2019 Projects
-
-
-# Resume
-
-KUSHAGRA CHOPRA
-Buffalo ▪ +17166031324 ▪ kushagrachopra069@gmail.com ▪ linkedin.com/in/kushagrachopra069
  
-# SUMMARY
+# Introduction
 
 Kushagra completed his undergraduate degree in Computer & Communication Engineering from Manipal Institute of Technology. He started his career as a Software Intern at Cerner Healthcare, where he later worked as Software Engineer for a year. Kushagra is currently pursuing a Master’s degree in Computer Science from University at Buffalo, NY and is expected to graduate in February 2020.
 
