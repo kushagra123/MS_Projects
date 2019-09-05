@@ -1,0 +1,11 @@
+Technologies being used : Python, Flask Framework, HTML/CSS, AJAX, JavaScript,Apache Solr, Tweepy, Facebook API, NLTK, Spacy, TextRank, LDA, Gensim, Glove Word Embeddings.
+Description :
+The project aimed at crawling multiple news websites and social media platforms(eg. Twitter) to perform the following tasks :
+1) Collecting news articles using BeautifulSoup web crawler and Tweets using Tweepy and perform cleaning and preprocessing of data. This was done using libraries such as NLTK and spacy.
+2) Filtering relevant news articles and tweets using a Latent Dirichlet Allocation approach. A LDA model was created using training data from ACLED(https://www.acleddata.com/data/) and then was used to score incoming text to compare similarity of the incoming text to the list of topics generated in the model. A thresholding was then done on the score to filter out the relevant text.
+3) Extract multiple relevant informations like :
+  a. Location : Extracted using a combination of NLTK’s GPE identification and a further filtering using a rule-based approach.
+  b. Event date : Extracted using a regex identification combined with identification of relevant terms(eg. Yesterday, last week), to pinpoint an event date with respect to the published date of the context.
+  c. Primary Person/Organization : Extracted using Spacy’s NER tagging, combined with a Text Rank approach that provided weights to each relevant token in order to increase the accuracy.
+4) A summary was generated for each news article using a Text Rank approach that performed an abstractive summarization, i.e, find the 4 most relevant sentences of an article using a similarity graph with each node representing a sentence and the edge representing the cosine similarity between the two nodes.
+5) Analysis was also performed to plot heatmaps and google charts to view distribution of data along multiple locations and source.   
